@@ -12,23 +12,30 @@ The repository is currently focused on reference material, exercises, previous c
 
 - [EXERCISES/](EXERCISES/)
   - [LAB_GENERAL/](EXERCISES/LAB_GENERAL/)
-    - [01 — Variables, IF, Loops (EN)](EXERCISES/LAB_GENERAL/01_Variables_IF_Loops.pdf)
-    - [01 — Variables, Si, Boucles (FR)](EXERCISES/LAB_GENERAL/01_Variables_Si_Boucles.pdf)
-    - [02 — Functions (EN)](EXERCISES/LAB_GENERAL/02_Functions.pdf)
-    - [02 — Fonctions (FR)](EXERCISES/LAB_GENERAL/02_Fonctions.pdf)
-    - [03 — Pointers (EN)](EXERCISES/LAB_GENERAL/03_Pointers.pdf)
-    - [03 — Pointeurs (FR)](EXERCISES/LAB_GENERAL/03_Pointeurs.pdf)
-    - [04 — Functions & Structures (EN)](EXERCISES/LAB_GENERAL/04_Functions-Structures.pdf)
-    - [04 — Fonctions & Structures (FR)](EXERCISES/LAB_GENERAL/04_Fonctions-Structures.pdf)
-    - [05 — Files (EN)](EXERCISES/LAB_GENERAL/05_Files.pdf)
-    - [05 — Fichiers (FR)](EXERCISES/LAB_GENERAL/05_Fichiers.pdf)
-    - [06 — Sort, Search & Lists (EN)](EXERCISES/LAB_GENERAL/06_Sort-Search-Lists.pdf)
-    - [06 — Tri, Recherche & Listes (FR)](EXERCISES/LAB_GENERAL/06_Tri-Recherche-Listes.pdf)
+    - **01 — Variables, Conditions & Loops** — [EN](EXERCISES/LAB_GENERAL/01_Variables_IF_Loops.pdf) · [FR](EXERCISES/LAB_GENERAL/01_Variables_Si_Boucles.pdf)
+    - **02 — Functions** — [EN](EXERCISES/LAB_GENERAL/02_Functions.pdf) · [FR](EXERCISES/LAB_GENERAL/02_Fonctions.pdf)
+    - **03 — Pointers** — [EN](EXERCISES/LAB_GENERAL/03_Pointers.pdf) · [FR](EXERCISES/LAB_GENERAL/03_Pointeurs.pdf)
+    - **04 — Functions & Structures** — [EN](EXERCISES/LAB_GENERAL/04_Functions-Structures.pdf) · [FR](EXERCISES/LAB_GENERAL/04_Fonctions-Structures.pdf)
+    - **05 — Files** — [EN](EXERCISES/LAB_GENERAL/05_Files.pdf) · [FR](EXERCISES/LAB_GENERAL/05_Fichiers.pdf)
+    - **06 — Sorting, Searching & Lists** — [EN](EXERCISES/LAB_GENERAL/06_Sort-Search-Lists.pdf) · [FR](EXERCISES/LAB_GENERAL/06_Tri-Recherche-Listes.pdf)
   - [Paris Dauphine — C Exercises](EXERCISES/Paris-Dauphine_Exos-C.pdf)
 
 ### Course archive — 2026
 
 - [ARCHIVE/2026/](ARCHIVE/2026/)
+  - [01 — Algorithms & Flowcharts](ARCHIVE/2026/01_Algorithm-and-Logigrams/)
+  - [02 — Computer, IDE & First Steps in C](ARCHIVE/2026/02_Computer-IDE-and-MORE/)
+  - [03 — Logic, Conditions & Loops](ARCHIVE/2026/03_Logic-Tests-Loops/)
+  - [04 — Functions & Multi-file Projects](ARCHIVE/2026/04_Functions-and-Projects/)
+  - [05 — Structures & Arrays](ARCHIVE/2026/05_Lists-Structures/)
+  - [06 — Memory, Addresses & Pointers](ARCHIVE/2026/06_Pointers/)
+  - [07 — Strings & Randomness](ARCHIVE/2026/07_String-Random/)
+  - [08 — File Handling](ARCHIVE/2026/08_File-Handling/)
+  - [09 — Dynamic Memory Allocation](ARCHIVE/2026/09_Dynamic-Memory-Allocation/)
+  - [10 — Recursion](ARCHIVE/2026/10_RECURSIVITY/)
+  - [11 — Data Structures & Linked Lists](ARCHIVE/2026/11_Chained-Lists/)
+  - [General C Memento](ARCHIVE/2026/Memento_general.pdf)
+  - [Unsorted backup files](ARCHIVE/2026/UNSORTED_MESS/)
 
 ### Repository
 
