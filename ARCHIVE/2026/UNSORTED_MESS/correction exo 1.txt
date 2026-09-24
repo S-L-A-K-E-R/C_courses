@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <string.h>
+#define NB_CARAC_MAX 100
+
+int compterOccurs(char string[], char caractere) {
+    int i = 0;
+    int compteur = 0;
+    for(i = 0; string[i] != '\0'; i++) {
+        if(string[i] == caractere) {
+            compteur++;
+        }
+    }
+    return compteur;
+}
+
+void saisirPhrase(char str[], int taillePhysique) {
+    printf("Veuillez saisir une phrase :\n");
+    // scanf(" %s", str); // ne prend qu'un mot (s'arrête à l'espace)
+    fgets(str, taillePhysique, stdin); // stdin = source clavier
+    if (str[strlen(str)-1] == '\n') { // si le dernier caractere est un retour à la ligne
+        str[strlen(str)-1] = '\0';
+    }
+    fflush(stdin); // au cas où la taille physique ait été atteinte, il reste la suite dans le buffer qu'il faut vider.
+    // car sinon ça serait injecté dans le prochain scanf. (essayer de le décommenter avec une taille physique courte)
+}
+
+int main() {
+    char chaine[NB_CARAC_MAX];
+    char carac = 0;
+    saisirPhrase(chaine, NB_CARAC_MAX);
+    printf("Quel caractere voulez-vous compter ?\n");
+    scanf(" %c", &carac);
+    printf("Il y a %d fois le caractere %c dans \"%s\".", compterOccurs(chaine, carac), carac, chaine);
+    return 0;
+}
