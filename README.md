@@ -40,9 +40,12 @@ The repository is currently focused on reference material, exercises, previous c
 ### Repository
 
 - [Syllabus](SYLLABUS.md) — under construction
-- [Licence](LICENCE) — under construction
+- [License](LICENSE.md) — CC BY 4.0 for original teaching materials
 
 ---
 
-> [!NOTE]
-> Some resources in this repository originate from previous classes, other authors, or educational institutions. They are kept here as reference material and may retain their original credits and usage conditions.
+## License & credits
+
+Original teaching material authored by **SLAKER** in this `README.md` and `EXERCISES/LAB_GENERAL/` is licensed under the [Creative Commons Attribution 4.0 International (CC BY 4.0)](LICENSE.md), **only to the extent that SLAKER holds the rights to license it**. Please credit SLAKER, link to the license, and indicate if you make changes.
+
+**Excluded from this license:** `ARCHIVE/`, `EXERCISES/Paris-Dauphine_Exos-C.pdf`, and any material originating from other authors or institutions, including third-party material embedded in otherwise licensed documents. These retain their original rights and usage conditions; their presence in this repository does not grant permission to reuse them. Any source code added later should carry its own software license.
