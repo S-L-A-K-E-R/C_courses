@@ -8,18 +8,6 @@ The repository is currently focused on reference material, exercises, previous c
 
 ## Repository directory
 
-### Exercises
-
-- [EXERCISES/](EXERCISES/)
-  - [LAB_GENERAL/](EXERCISES/LAB_GENERAL/)
-    - **01 — Variables, Conditions & Loops** — [EN](EXERCISES/LAB_GENERAL/01_Variables_IF_Loops.pdf) · [FR](EXERCISES/LAB_GENERAL/01_Variables_Si_Boucles.pdf)
-    - **02 — Functions** — [EN](EXERCISES/LAB_GENERAL/02_Functions.pdf) · [FR](EXERCISES/LAB_GENERAL/02_Fonctions.pdf)
-    - **03 — Pointers** — [EN](EXERCISES/LAB_GENERAL/03_Pointers.pdf) · [FR](EXERCISES/LAB_GENERAL/03_Pointeurs.pdf)
-    - **04 — Functions & Structures** — [EN](EXERCISES/LAB_GENERAL/04_Functions-Structures.pdf) · [FR](EXERCISES/LAB_GENERAL/04_Fonctions-Structures.pdf)
-    - **05 — Files** — [EN](EXERCISES/LAB_GENERAL/05_Files.pdf) · [FR](EXERCISES/LAB_GENERAL/05_Fichiers.pdf)
-    - **06 — Sorting, Searching & Lists** — [EN](EXERCISES/LAB_GENERAL/06_Sort-Search-Lists.pdf) · [FR](EXERCISES/LAB_GENERAL/06_Tri-Recherche-Listes.pdf)
-  - [Paris Dauphine — C Exercises](EXERCISES/Paris-Dauphine_Exos-C.pdf)
-
 ### Course archive — 2026
 
 - [ARCHIVE/2026/](ARCHIVE/2026/)
@@ -36,6 +24,21 @@ The repository is currently focused on reference material, exercises, previous c
   - [11 — Data Structures & Linked Lists](ARCHIVE/2026/11_Chained-Lists/)
   - [General C Memento](ARCHIVE/2026/Memento_general.pdf)
   - [Unsorted backup files](ARCHIVE/2026/UNSORTED_MESS/)
+
+
+### Exercises
+
+- [EXERCISES/](EXERCISES/)
+  - [LAB_GENERAL/](EXERCISES/LAB_GENERAL/)
+    - **01 — Variables, Conditions & Loops** — [EN](EXERCISES/LAB_GENERAL/01_Variables_IF_Loops.pdf) · [FR](EXERCISES/LAB_GENERAL/01_Variables_Si_Boucles.pdf)
+    - **02 — Functions** — [EN](EXERCISES/LAB_GENERAL/02_Functions.pdf) · [FR](EXERCISES/LAB_GENERAL/02_Fonctions.pdf)
+    - **03 — Pointers** — [EN](EXERCISES/LAB_GENERAL/03_Pointers.pdf) · [FR](EXERCISES/LAB_GENERAL/03_Pointeurs.pdf)
+    - **04 — Functions & Structures** — [EN](EXERCISES/LAB_GENERAL/04_Functions-Structures.pdf) · [FR](EXERCISES/LAB_GENERAL/04_Fonctions-Structures.pdf)
+    - **05 — Files** — [EN](EXERCISES/LAB_GENERAL/05_Files.pdf) · [FR](EXERCISES/LAB_GENERAL/05_Fichiers.pdf)
+    - **06 — Sorting, Searching & Lists** — [EN](EXERCISES/LAB_GENERAL/06_Sort-Search-Lists.pdf) · [FR](EXERCISES/LAB_GENERAL/06_Tri-Recherche-Listes.pdf)
+  - [Paris Dauphine — C Exercises](EXERCISES/Paris-Dauphine_Exos-C.pdf)
+ 
+
 
 ### Repository
 
