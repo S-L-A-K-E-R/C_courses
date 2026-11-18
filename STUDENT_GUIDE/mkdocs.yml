@@ -1,0 +1,76 @@
+site_name: C Programming Course
+site_description: A structured C programming study guide
+repo_url: https://github.com/S-L-A-K-E-R/C_courses
+edit_uri: edit/main/STUDENT_GUIDE/docs/
+
+theme:
+  name: material
+  language: en
+
+  features:
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - content.code.copy
+    - search.highlight
+    - toc.follow
+
+  palette:
+    - scheme: slate
+      primary: indigo
+      accent: cyan
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+    - scheme: default
+      primary: indigo
+      accent: cyan
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+
+  font:
+    text: Inter
+    code: JetBrains Mono
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - pymdownx.details
+
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+
+  - pymdownx.tabbed:
+      alternate_style: true
+
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+nav:
+  - Home: index.md
+
+  - Français:
+      - Présentation: fr/index.md
+      - C - Cours principal: fr/cours/index.md
+      - Exercices: fr/exercices/index.md
+      - Aller plus loin: fr/aller-plus-loin/index.md
+
+  - English:
+      - Overview: en/index.md
+      - C - Core course: en/course/index.md
+      - Exercises: en/exercises/index.md
+      - Beyond the core: en/beyond-core/index.md
