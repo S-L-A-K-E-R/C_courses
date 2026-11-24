@@ -1,6 +1,6 @@
 # Affectation, Algorithmes de base et C
 
-> Énoncés avec solutions (algorithme + C)
+> Énoncés uniquement. Consulter le PDF original pour les compléments.
 
 ## Exercice 1 — Affichage simple
 

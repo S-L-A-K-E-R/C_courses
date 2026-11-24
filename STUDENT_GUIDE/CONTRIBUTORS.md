@@ -8,7 +8,7 @@ This project builds upon original educational resources and includes original co
 
 ## Original educational resources
 
-- **Tatiana Aubonnet** — Author of the original C programming course (2008), which served as a reference for this study guide.
+- **Tatiana Aubonnet** — Author of *Algorithmes et programmation — Langage C* (192 slides, PDF dated 2008), consulted as a topic reference. The original document is not redistributed.
 - **[S-L-A-K-E-R](https://github.com/S-L-A-K-E-R)** — Author of the original C programming exercises in `EXERCISES/LAB_GENERAL/`, used and adapted in this project.
 
 ## Acknowledgements

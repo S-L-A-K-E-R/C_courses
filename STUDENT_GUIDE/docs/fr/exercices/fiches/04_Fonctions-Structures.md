@@ -1,6 +1,6 @@
 # Structures, fonctions & procédures (Algo + C)
 
-> Énoncés avec solutions en pseudo-algorithme et langage C
+> Énoncés uniquement. Consulter le PDF original pour les compléments.
 
 ## Exercice 1 — Point 2D et distance à l’origine
 

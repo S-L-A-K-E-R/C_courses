@@ -1,6 +1,6 @@
 # License and copyright
 
-Copyright (c) 2026 1KuMo
+Copyright (c) 2026 1KuMo and respective contributors
 
 ## Original work and adaptations
 
@@ -12,7 +12,9 @@ This includes the original study-guide text, website documentation, organization
 
 The six exercise sheets included in this project are based on original exercises from S-L-A-K-E-R's `EXERCISES/LAB_GENERAL/` directory in the C_courses repository:
 
-https://github.com/1KuMo/C_courses
+https://github.com/S-L-A-K-E-R/C_courses/tree/main/EXERCISES/LAB_GENERAL
+
+Original license: https://github.com/S-L-A-K-E-R/C_courses/blob/main/LICENSE.md
 
 The original material is licensed under CC BY 4.0 to the extent that S-L-A-K-E-R holds the rights to license it. The exercise sheets in this project have been adapted and reformatted into bilingual study materials.
 
@@ -20,7 +22,7 @@ Please credit S-L-A-K-E-R when reusing the adapted exercises, link to the origin
 
 ## Excluded third-party material
 
-The original C programming course by Tatiana Aubonnet (2008) and any other third-party material not explicitly covered above are not relicensed by this document. They remain subject to their respective copyright and usage conditions.
+The original C programming course by Tatiana Aubonnet (2008) is a bibliographic reference. Its PDF, slides and illustrations are not included; no redistribution license was verified. Third-party material remains subject to its respective rights and is not relicensed here. See the source note in README.md.
 
 ## License terms
 

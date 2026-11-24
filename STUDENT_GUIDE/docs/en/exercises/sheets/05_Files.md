@@ -1,6 +1,6 @@
 # File Handling (Algo + C)
 
-> Statements with solutions in pseudo-algorithm and C
+> Exercise statements only. Refer to the original PDF for the accompanying material.
 
 ## Exercise 1 — Create and write to a text file
 

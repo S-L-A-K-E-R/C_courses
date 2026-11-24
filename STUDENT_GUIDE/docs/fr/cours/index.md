@@ -13,9 +13,11 @@ gcc -std=c11 -Wall -Wextra -Wpedantic -g main.c -o main
 ./main
 ```
 
-- `-std=c11` : utiliser la norme C11.
+- `-std=c11` : utiliser C11 pour la compatibilité ; `-std=c23` convient avec un compilateur compatible C23.
 - `-Wall -Wextra -Wpedantic` : activer les avertissements utiles.
 - `-g` : informations de débogage.
+
+Le premier exemple est un programme complet. Les suivants sont des extraits : ajouter les en-têtes nécessaires (`<stdio.h>`, `<stdlib.h>`, `<stddef.h>`, `<stdint.h>`, `<string.h>`, `<limits.h>`) et placer les instructions dans une fonction.
 
 Un programme minimal :
 
@@ -148,7 +150,7 @@ Les arguments sont transmis par valeur : modifier un paramètre simple ne modifi
 
 ### Plusieurs résultats
 
-Le C retourne une valeur unique directement. Pour produire plusieurs résultats, utiliser des paramètres pointeurs de sortie, une structure retournée, ou un tableau approprié.
+Le C retourne une valeur unique directement. Pour produire plusieurs résultats, utiliser des paramètres pointeurs de sortie, une structure retournée, ou remplir un tableau de sortie (le C ne retourne pas de tableau par valeur).
 
 ```c
 void minmax(const int a[], size_t n, int *min, int *max);
@@ -170,7 +172,7 @@ unsigned long long factorial(unsigned n) {
     return n * factorial(n - 1);
 }
 ```
-La récursion consomme la pile d'appels. Une profondeur trop grande peut épuiser la pile. Fibonacci naïf illustre la récursion, mais sa version récursive simple est très coûteuse; une version itérative est préférable pour calculer efficacement.
+Avec un `unsigned long long` de 64 bits, seules les factorielles de 0 à 20 sont représentables ; rejeter les valeurs supérieures ou utiliser une représentation plus grande. L'arithmétique non signée fonctionne modulo la plage du type. La récursion consomme la pile d'appels. Une profondeur trop grande peut épuiser la pile. Fibonacci naïf illustre la récursion, mais sa version récursive simple est très coûteuse; une version itérative est préférable pour calculer efficacement.
 
 ## 7. Pointeurs et adresses
 
@@ -208,7 +210,7 @@ Une chaîne C est un tableau de `char` terminé par `\0`. Sa capacité doit incl
 ```c
 char name[16] = "Ada";
 ```
-`strlen` compte les caractères avant `\0` (sans compter le terminateur). `strcmp` compare lexicographiquement; `strcpy` copie mais exige que la destination soit assez grande; `strcat` ajoute et exige aussi une capacité suffisante. Préférer des opérations dont la taille est contrôlée, et vérifier les retours des fonctions d'entrée.
+`strlen` compte les octets avant `\0` (pas les caractères Unicode en UTF-8) (sans compter le terminateur). `strcmp` compare lexicographiquement; `strcpy` copie mais exige que la destination soit assez grande; `strcat` ajoute et exige aussi une capacité suffisante. Préférer des opérations dont la taille est contrôlée, et vérifier les retours des fonctions d'entrée.
 
 Pour lire une ligne :
 ```c
@@ -233,10 +235,23 @@ a = NULL;
 Toujours vérifier les calculs de taille (risque de débordement), la réussite de l'allocation et libérer chaque allocation exactement une fois. `realloc` : utiliser un pointeur temporaire pour ne pas perdre l'ancien bloc en cas d'échec.
 
 ```c
-int *tmp = realloc(a, new_n * sizeof *a);
-if (tmp != NULL) a = tmp;
-else { /* a reste valide : gérer l'échec */ }
+/* a vaut NULL ou possède un bloc ; new_n est de type size_t. */
+if (new_n == 0) {
+    free(a);
+    a = NULL;
+} else if (new_n > SIZE_MAX / sizeof *a) {
+    /* Gérer le débordement ; a reste inchangé. */
+} else {
+    int *tmp = realloc(a, new_n * sizeof *a);
+    if (tmp != NULL) {
+        a = tmp;
+    } else {
+        /* Gérer l'échec ; a reste valide. */
+    }
+}
 ```
+
+Inclure `<stdlib.h>` et `<stdint.h>`. Mettre à jour la taille/capacité logique uniquement après réussite. Un `realloc` de taille nulle a un comportement indéfini en C23.
 
 Un tableau dynamique à deux dimensions peut être représenté par un tableau de pointeurs (allocations séparées) ou par un bloc contigu. Le bloc contigu simplifie la libération et la localité mémoire.
 
@@ -366,7 +381,7 @@ Modes : `r` lecture, `w` écriture/écrasement, `a` ajout; suffixe `b` pour bina
 
 Le PGCD peut se calculer par l'algorithme d'Euclide : tant que `b != 0`, remplacer `(a,b)` par `(b,a%b)`. Le dernier `a` non nul est le PGCD. Le PPCM (si les valeurs sont traitées sans débordement) est `a / pgcd(a,b) * b` ; diviser avant de multiplier réduit le risque de dépassement.
 
-Pour tester la primalité de `n`, traiter les cas `n < 2`, puis essayer les diviseurs jusqu'à `d*d > n` (ou une condition équivalente évitant le débordement). Le prochain premier consiste à avancer et retester.
+Pour tester la primalité de `n`, traiter les cas `n < 2`, puis essayer les diviseurs tant que `d <= n / d`, en partant de 2 (évite le débordement de multiplication). Le prochain premier consiste à avancer et retester.
 
 ### Racines d'un trinôme
 
@@ -389,7 +404,7 @@ Comparer les caractères depuis les deux extrémités en progressant vers le cen
 - **Fraction** : dénominateur non nul; normaliser avec PGCD; garder un signe cohérent (par exemple dénominateur positif).
 - **Date** : tester année bissextile; valider le nombre de jours du mois; calculer le jour de l'année par somme des mois précédents.
 - **Temps** : normaliser secondes/minutes en reportant les dépassements; définir si les heures sont modulo 24.
-- **RGB** : chaque canal est compris entre 0 et 255; conversion en gris doit préciser la formule/approximation utilisée.
+- **RGB** : chaque canal sur 8 bits est compris entre 0 et 255 (`unsigned char` n'a pas nécessairement 8 bits ; utiliser `uint8_t` si disponible ou valider la plage); conversion en gris doit préciser la formule/approximation utilisée.
 - **Polynôme** : évaluer `a*x*x + b*x + c`.
 - **Statistiques** : calculer min/max/moyenne/variance en parcourant les données et traiter `n == 0`.
 - **Compte bancaire** : vérifier montants positifs, fonds suffisants pour retrait, et succès/échec clairement signalé. Pour de vrais montants monétaires, éviter les calculs naïfs en `double`.

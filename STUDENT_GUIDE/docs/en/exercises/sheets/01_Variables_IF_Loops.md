@@ -1,6 +1,6 @@
 # Assignment, Basic Algorithms and C
 
-> Statements with solutions (algorithm + C)
+> Exercise statements only. Refer to the original PDF for the accompanying material.
 
 ## Exercise 1 — Simple display
 

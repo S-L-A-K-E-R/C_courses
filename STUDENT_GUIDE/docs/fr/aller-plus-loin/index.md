@@ -40,7 +40,7 @@ Merge sort en est un exemple : les divisions ont une profondeur logarithmique et
 | Merge sort | `O(n log n)` / `O(n log n)` | oui | `O(n)` |
 | Quicksort | `O(n log n)` moyen / `O(n²)` | non | pile de récursion |
 | Heap sort | `O(n log n)` / `O(n log n)` | non | `O(1)` |
-| Counting | `O(n+k)` | stable si reconstruit correctement | `O(k)` |
+| Counting | `O(n+k)` | oui avec placement stable | `O(n+k)` pour la version stable usuelle ; `O(k)` pour la reconstruction par fréquences |
 | Radix LSD | dépend du nombre de chiffres et de la base | stable par passe | buffers |
 
 Le choix dépend des données, de la stabilité requise, de la mémoire, et de la facilité de mise en œuvre. Tester sur tableaux vides, singleton, déjà triés, inversés, avec doublons et valeurs extrêmes.
@@ -95,15 +95,24 @@ Pour chaque allocation, documenter qui en est responsable, qui la libère, et si
 
 ### Réallocation sans perte
 
+Traiter explicitement une taille nulle avant `realloc` (comportement indéfini en C23). Inclure `<stdlib.h>`.
+
 ```c
-void *tmp = realloc(ptr, new_size);
-if (tmp == NULL && new_size != 0) {
-    // ptr reste utilisable; traiter l'échec
+/* ptr vaut NULL ou possède un bloc ; new_size est de type size_t. */
+if (new_size == 0) {
+    free(ptr);
+    ptr = NULL;
 } else {
-    ptr = tmp;
+    void *tmp = realloc(ptr, new_size);
+    if (tmp != NULL) {
+        ptr = tmp;
+    } else {
+        /* Gérer l'échec ; ptr reste valide. */
+    }
 }
 ```
-En pratique, clarifier le cas `new_size == 0` selon la version du standard et préférer une libération explicite. Vérifier que `new_count * sizeof *ptr` ne déborde pas `SIZE_MAX`.
+
+Avant de multiplier `new_count * sizeof *ptr` pour un pointeur typé, vérifier `new_count <= SIZE_MAX / sizeof *ptr` (inclure `<stdint.h>`). Mettre à jour la taille logique uniquement après réussite.
 
 ### Débogage
 

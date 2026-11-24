@@ -11,9 +11,11 @@ A typical workflow: understand the problem, define inputs and outputs, choose an
 gcc -std=c11 -Wall -Wextra -Wpedantic -g main.c -o main
 ./main
 ```
-- `-std=c11`: use the C11 standard.
+- `-std=c11`: use C11 for broad compatibility; `-std=c23` is also appropriate on a C23-capable compiler.
 - `-Wall -Wextra -Wpedantic`: enable useful warnings.
 - `-g`: debugging information.
+
+The first example is a complete program. Later examples are snippets: add the relevant headers (`<stdio.h>`, `<stdlib.h>`, `<stddef.h>`, `<stdint.h>`, `<string.h>`, `<limits.h>`) and place statements inside a function.
 
 A minimal program:
 ```c
@@ -129,7 +131,7 @@ int max3(int a, int b, int c) {
 Arguments are passed by value: changing a simple parameter does not change the caller's variable. To modify the caller's variable, pass a pointer. Local variables are scoped to their block. Avoid globals for ordinary program state.
 
 ### Multiple outputs
-C returns one value directly. To produce multiple results, use output pointer parameters, return a structure, or use an appropriate array.
+C returns one value directly. To produce multiple results, use output pointer parameters, return a structure, or write into an output array (C cannot return arrays by value).
 ```c
 void minmax(const int a[], size_t n, int *min, int *max);
 ```
@@ -146,7 +148,7 @@ unsigned long long factorial(unsigned n) {
     return n * factorial(n - 1);
 }
 ```
-Recursion consumes the call stack; excessive depth can overflow it. Naive recursive Fibonacci demonstrates recursion but is very expensive; iteration is usually better for efficient computation.
+With a 64-bit `unsigned long long`, only `0!` through `20!` fit; reject larger inputs or use a larger representation. Unsigned arithmetic wraps on overflow. Recursion consumes the call stack; excessive depth can overflow it. Naive recursive Fibonacci demonstrates recursion but is very expensive; iteration is usually better for efficient computation.
 
 ## 7. Pointers and addresses
 
@@ -178,7 +180,7 @@ A C string is a `char` array terminated by `\0`. Capacity must include the termi
 ```c
 char name[16] = "Ada";
 ```
-`strlen` counts characters before `\0`; `strcmp` compares lexicographically; `strcpy` copies but requires a large enough destination; `strcat` also requires enough capacity. Prefer size-controlled operations and check input results.
+`strlen` counts bytes before `\0` (not Unicode characters in UTF-8); `strcmp` compares lexicographically; `strcpy` copies but requires a large enough destination; `strcat` also requires enough capacity. Prefer size-controlled operations and check input results.
 
 Read a line:
 ```c
@@ -200,10 +202,23 @@ a = NULL;
 ```
 Check size calculations (overflow risk), allocation success, and free each allocation exactly once. Use a temporary pointer with `realloc` so failure does not lose the old block.
 ```c
-int *tmp = realloc(a, new_n * sizeof *a);
-if (tmp != NULL) a = tmp;
-else { /* a remains valid: handle failure */ }
+/* a is NULL or owns a block; new_n has type size_t. */
+if (new_n == 0) {
+    free(a);
+    a = NULL;
+} else if (new_n > SIZE_MAX / sizeof *a) {
+    /* Handle size overflow; a remains unchanged. */
+} else {
+    int *tmp = realloc(a, new_n * sizeof *a);
+    if (tmp != NULL) {
+        a = tmp;
+    } else {
+        /* Handle allocation failure; a remains valid. */
+    }
+}
 ```
+Include `<stdlib.h>` and `<stdint.h>`. Update logical size/capacity only after success. Zero-size `realloc` has undefined behavior in C23.
+
 A dynamic 2D array can use an array of pointers (separate allocations) or one contiguous block. A contiguous block simplifies cleanup and improves locality.
 
 ## 10. Structures and `typedef`
@@ -322,7 +337,7 @@ Modes: `r` read, `w` write/truncate, `a` append; add `b` for binary (`rb`, `wb`,
 
 Euclid's algorithm computes GCD: while `b != 0`, replace `(a,b)` with `(b,a%b)`. The final nonzero `a` is the GCD. LCM (when handled without overflow) is `a / gcd(a,b) * b`; dividing before multiplying reduces overflow risk.
 
-To test whether `n` is prime, handle `n < 2`, then try divisors until `d*d > n` (or use an equivalent overflow-safe condition). The next-prime problem increments candidates and tests them.
+To test whether `n` is prime, handle `n < 2`, then try divisors while `d <= n / d`, starting at 2 (avoids multiplication overflow). The next-prime problem increments candidates and tests them.
 
 ### Quadratic roots
 
@@ -345,7 +360,7 @@ Compare characters from both ends, moving toward the center. If spaces and case 
 - **Fraction**: denominator must not be zero; normalize using GCD; use a consistent sign convention (e.g. positive denominator).
 - **Date**: check leap year; validate month days; calculate day of year by summing preceding months.
 - **Time**: normalize seconds/minutes by carrying overflow; define whether hours wrap modulo 24.
-- **RGB**: each channel is in 0–255; grayscale conversion should specify its formula/approximation.
+- **RGB**: each 8-bit channel is in 0–255 (`unsigned char` is not necessarily 8 bits; use `uint8_t` where available or validate the range); grayscale conversion should specify its formula/approximation.
 - **Polynomial**: evaluate `a*x*x + b*x + c`.
 - **Statistics**: compute min/max/mean/variance while scanning; handle `n == 0`.
 - **Bank account**: validate positive amounts, sufficient funds for withdrawals, and report success/failure. For real currency, avoid naive `double` calculations.

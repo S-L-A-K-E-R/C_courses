@@ -1,6 +1,6 @@
 # Sorting, Searching & Lists (Algo + C)
 
-> Exercises with solutions in pseudo-code and C
+> Exercise statements only. Refer to the original PDF for the accompanying material.
 
 ## Exercise 1 — Sequential search (index or -1)
 

@@ -66,11 +66,25 @@ nav:
   - Français:
       - Présentation: fr/index.md
       - C - Cours principal: fr/cours/index.md
-      - Exercices: fr/exercices/index.md
+      - Exercices:
+          - fr/exercices/index.md
+          - fr/exercices/fiches/01_Variables_Si_Boucles.md
+          - fr/exercices/fiches/02_Fonctions.md
+          - fr/exercices/fiches/03_Pointeurs.md
+          - fr/exercices/fiches/04_Fonctions-Structures.md
+          - fr/exercices/fiches/05_Fichiers.md
+          - fr/exercices/fiches/06_Tri-Recherche-Listes.md
       - Aller plus loin: fr/aller-plus-loin/index.md
 
   - English:
       - Overview: en/index.md
       - C - Core course: en/course/index.md
-      - Exercises: en/exercises/index.md
+      - Exercises:
+          - en/exercises/index.md
+          - en/exercises/sheets/01_Variables_IF_Loops.md
+          - en/exercises/sheets/02_Functions.md
+          - en/exercises/sheets/03_Pointers.md
+          - en/exercises/sheets/04_Functions-Structures.md
+          - en/exercises/sheets/05_Files.md
+          - en/exercises/sheets/06_Sort-Search-Lists.md
       - Beyond the core: en/beyond-core/index.md

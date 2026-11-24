@@ -1,6 +1,6 @@
 # 20 Exercices — Pointeurs, Fonctions & Procédures (Algo + C)
 
-> Énoncés avec solutions en pseudo-algorithme et langage C
+> Énoncés uniquement. Consulter le PDF original pour les compléments.
 
 ## Exercice 1 — Pointeur de base et déréférencement
 

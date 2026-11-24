@@ -39,7 +39,7 @@ Merge sort is an example: logarithmic division depth and `n` items merged per le
 | Merge sort | `O(n log n)` / `O(n log n)` | yes | `O(n)` |
 | Quicksort | average `O(n log n)` / `O(n²)` | no | recursion stack |
 | Heap sort | `O(n log n)` / `O(n log n)` | no | `O(1)` |
-| Counting | `O(n+k)` | stable if reconstructed properly | `O(k)` |
+| Counting | `O(n+k)` | yes with stable output placement | `O(n+k)` for the usual stable version; `O(k)` for frequency-only reconstruction |
 | LSD radix | depends on digits and base | stable per pass | buffers |
 
 The choice depends on input, stability, memory, and implementation complexity. Test empty, singleton, sorted, reverse-sorted, duplicate-heavy, and extreme-value arrays.
@@ -84,15 +84,24 @@ Floyd: advance slow by one and fast by two. If they meet, a cycle exists. If fas
 For every allocation, document who owns it, who frees it, and whether a function transfers ownership. Avoid dangling pointers, double-free, leaks, and use-after-free.
 
 ### Reallocation safely
+Handle a zero size explicitly before calling `realloc` (undefined behavior in C23). Include `<stdlib.h>`.
+
 ```c
-void *tmp = realloc(ptr, new_size);
-if (tmp == NULL && new_size != 0) {
-    // ptr is still valid; handle failure
+/* ptr is NULL or owns a block; new_size is size_t. */
+if (new_size == 0) {
+    free(ptr);
+    ptr = NULL;
 } else {
-    ptr = tmp;
+    void *tmp = realloc(ptr, new_size);
+    if (tmp != NULL) {
+        ptr = tmp;
+    } else {
+        /* Handle failure; ptr is still valid. */
+    }
 }
 ```
-Clarify the `new_size == 0` case according to the standard/version and prefer explicit freeing. Check `new_count * sizeof *ptr` against `SIZE_MAX`.
+
+Before multiplying `new_count * sizeof *ptr` for a typed pointer, check `new_count <= SIZE_MAX / sizeof *ptr` (include `<stdint.h>`). Update logical size only after success.
 
 ### Debugging
 Compile with warnings, use a debugger and available memory-checking tools. Test edge cases and assert preconditions. Do not ignore warnings.

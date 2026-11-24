@@ -1,6 +1,6 @@
 # Functions & Procedures (Algo + C)
 
-> Statements with solutions in pseudo-algorithm and C language
+> Exercise statements only. Refer to the original PDF for the accompanying material.
 
 ## Exercise 1 — Linear function
 

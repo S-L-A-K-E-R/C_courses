@@ -1,6 +1,6 @@
 # Tri, Recherche & Listes (Algo + C)
 
-> Énoncés avec solutions en pseudo-algorithme et langage C
+> Énoncés uniquement. Consulter le PDF original pour les compléments.
 
 ## Exercice 1 — Recherche séquentielle (index ou -1)
 
