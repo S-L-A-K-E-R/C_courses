@@ -3,6 +3,8 @@
 **LINK FROM THE OFFICIAL REPO (running the MKDOCS):**\
 https://1kumo.github.io/C-Learning/
 
+<br>
+
 A structured, bilingual study guide for learning the C programming language. The site brings together a core course, a set of advanced topics, and exercise sheets in both French and English.
 
 ## About
