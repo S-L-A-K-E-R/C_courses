@@ -1,6 +1,8 @@
 # Tri, Recherche & Listes (Algo + C)
 
-> Énoncés uniquement. Consulter le PDF original pour les compléments.
+> **Prérequis du cours** : [6. Récursivité, §6.7 Tableaux et intervalles](../../cours/index.md#67-recursivite-sur-les-tableaux-et-les-intervalles) · [11. Callbacks et qsort](../../cours/index.md#11-fonctions-de-bibliotheque-callbacks-et-qsort) · [12. Listes chaînées](../../cours/index.md#12-listes-chainees) · [13. Recherche et tri](../../cours/index.md#13-recherche-et-tri).
+> Exercices 8-20 : lire d'abord [Aller plus loin §§3-7](../../aller-plus-loin/index.md#3-choisir-un-tri) (tri, partition, tas, sélection, listes).
+> Énoncés sans corrigé fourni. [PDF source](06_Tri-Recherche-Listes.pdf) : mêmes énoncés, conservé comme référence.
 
 ## Exercice 1 — Recherche séquentielle (index ou -1)
 
@@ -30,9 +32,13 @@
 
 Énoncé. Fusionner A et B triés en C trié.
 
+Repère : la fusion est l'étape « combiner » du tri fusion, tracée en [§13 Recherche et tri](../../cours/index.md#13-recherche-et-tri).
+
 ## Exercice 8 — Tri fusion (merge sort)
 
 Énoncé. Implémenter tri fusion récursif (stable).
+
+Repère : avant d'écrire la division récursive, relire [§6.7 Récursivité sur les tableaux et les intervalles](../../cours/index.md#67-recursivite-sur-les-tableaux-et-les-intervalles) ; la mesure qui diminue est la taille de l'intervalle.
 
 ## Exercice 9 — Quicksort (partition de Lomuto)
 
@@ -60,7 +66,7 @@
 
 ## Exercice 15 — Somme cible (two-sum) par deux pointeurs
 
-Énoncé. Dire s’il existe i < j tel que ai + aj = S.
+Énoncé. Dans un tableau trié croissant, dire s’il existe i < j tel que a[i] + a[j] = S.
 
 ## Exercice 16 — Liste chaînée : insertion tête & queue
 

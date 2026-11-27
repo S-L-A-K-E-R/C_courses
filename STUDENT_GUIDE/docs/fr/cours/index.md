@@ -30,6 +30,11 @@ int main(void) {
 }
 ```
 
+!!! note "Liaison mathématique"
+    Si le programme utilise `<math.h>` (par exemple `sqrt`), ajouter `-lm` après le nom du programme : `gcc ... main.c -o main -lm`.
+
+> **Voir aussi** : [Exercices — fiche 1](../exercices/fiches/01_Variables_Si_Boucles.md).
+
 ## 1. Variables, types et expressions
 
 Une variable possède un type, un nom, une valeur et une durée de vie. En C, les types courants sont `char`, `int`, `long`, `float`, `double` et les types dérivés. Utiliser `sizeof(type)` pour connaître la taille en octets (elle dépend de la plateforme).
@@ -52,7 +57,7 @@ if (scanf("%d", &n) != 1) {
 }
 printf("n = %d\n", n);
 ```
-Formats fréquents : `%d` / `%i` int, `%u` unsigned, `%ld` long, `%f` float/double à `printf`, `%lf` double à `scanf`, `%c` caractère, `%s` chaîne. Pour `printf`, un `double` se formate avec `%f`. Ne pas utiliser un format incompatible avec le type.
+Formats fréquents : `%d` / `%i` int, `%u` unsigned, `%ld` long, `%f` float/double à `printf`, `%f` float à `scanf`, `%lf` double à `scanf`, `%c` caractère, `%s` chaîne, `%zu` pour `size_t`. `size_t` est le type non signé des tailles et indices, défini dans `<stddef.h>`. Ne pas utiliser un format incompatible avec le type.
 
 ### Opérateurs
 
@@ -64,6 +69,12 @@ Formats fréquents : `%d` / `%i` int, `%u` unsigned, `%ld` long, `%f` float/doub
 - Conversion : `int x = (int)3.8;` tronque vers zéro.
 
 Attention à la division entière : `7 / 2` vaut `3`; `7.0 / 2` vaut `3.5`. Éviter les dépassements d'entiers et les divisions par zéro. Les priorités peuvent être rendues explicites avec des parenthèses.
+
+!!! warning "Erreur fréquente — `=` ou `==`"
+    `if (x = 3)` affecte 3 puis teste la valeur ; utilisez `if (x == 3)` pour comparer.
+    Avec `scanf`, `scanf("%d", x)` (sans `&`) écrit à une adresse invalide ; la forme correcte est `scanf("%d", &x)`.
+
+> **Voir aussi** : [Exercices — fiche 1](../exercices/fiches/01_Variables_Si_Boucles.md).
 
 ## 2. Conditions et boucles
 
@@ -111,6 +122,12 @@ void swap_int(int *a, int *b) {
 
 Le dernier chiffre d'un entier positif est `n % 10`; retirer ce chiffre avec `n /= 10`. Prévoir le cas zéro et les nombres négatifs, notamment `INT_MIN` qui ne peut pas être simplement nié dans un `int`.
 
+L'invariant de la boucle de somme est : avant l'itération `i`, `sum` contient `1 + ... + (i-1)` et `count` vaut `i - 1`. Après l'itération, ils contiennent la somme jusqu'à `i` et `i`. Vérifier cet invariant explique pourquoi l'initialisation à `0` et la condition `i <= n` sont correctes.
+
+Ici `int *a` est un paramètre pointeur et `*a` désigne la valeur pointée : le détail arrive au [chapitre 7](#7-pointeurs-et-adresses).
+
+> **Voir aussi** : [Exercices — fiche 1](../exercices/fiches/01_Variables_Si_Boucles.md).
+
 ## 4. Tableaux
 
 Un tableau statique contient des éléments du même type contigus en mémoire. Ses indices vont de `0` à `n-1`.
@@ -132,6 +149,22 @@ void print_array(const int a[], size_t n);
 int matrix[2][3] = {{1,2,3},{4,5,6}};
 ```
 Parcours : boucle sur les lignes, puis les colonnes. En mémoire, un tableau C est rangé en ordre row-major (ligne par ligne). Pour une matrice carrée aplatie de dimension `N`, l'élément `(i,j)` correspond à `a[i * N + j]`.
+
+### Un tableau passé à une fonction
+
+Dans `void print_array(const int a[], size_t n)`, le paramètre `a` est ajusté en pointeur vers le premier élément : la taille du tableau appelant n'est pas transmise avec lui. Ainsi `sizeof a` dans `print_array` donne la taille d'un pointeur, pas `n * sizeof(int)`. La taille doit donc toujours être un paramètre distinct.
+
+```c
+void print_array(const int a[], size_t n) {
+    /* a pointe sur a[0] ; n est la seule source de la longueur. */
+    for (size_t i = 0; i < n; ++i) printf("%d\n", a[i]);
+}
+```
+
+!!! warning "Erreur fréquente — indice hors limites"
+    Un tableau de `n` éléments va de `t[0]` à `t[n - 1]`. `t[n]` est hors limites ; la boucle doit utiliser `i < n`.
+
+> **Voir aussi** : [Exercices — fiche 1](../exercices/fiches/01_Variables_Si_Boucles.md).
 
 ## 5. Fonctions et procédures
 
@@ -159,20 +192,196 @@ Toujours vérifier les préconditions (par exemple `n > 0` et pointeurs valides)
 
 [Fiche d'exercices — Fonctions](../exercices/fiches/02_Fonctions.md)
 
+Par exemple, dans `max3(2, 7, 5)`, `m` vaut d'abord `7`, puis la fonction retourne `7`. Chaque appel possède ses propres paramètres et variables locales.
+
+```c
+void swap_wrong(int a, int b) {
+    int tmp = a;
+    a = b;
+    b = tmp;
+}
+```
+
+Cette fonction échange seulement deux copies : `x` et `y` chez l'appelant ne changent pas. La version correcte avec des pointeurs arrive au chapitre 7.
+
 ## 6. Récursivité
 
-Une fonction récursive s'appelle elle-même. Elle doit avoir :
-1. un cas de base qui s'arrête;
-2. un appel sur un problème plus petit;
-3. une progression vers le cas de base.
+Une fonction récursive s'appelle elle-même. Ce n'est pas une boucle déguisée : elle confie à un appel plus petit un **problème de même nature**, puis recombine le résultat au retour.
+
+Avant d'écrire le code, trois questions suffisent :
+
+1. Quel est le **cas de base**, c'est-à-dire le cas le plus petit que l'on sait résoudre directement ?
+2. Quel appel plus petit fait-on ?
+3. Quelle valeur ou quelle action reste-t-il à faire après le retour de cet appel ?
+
+### 6.1 L'idée récursive
+
+Commencer par un exemple sans valeur de retour permet de voir l'auto-appel seul :
+
+```c
+#include <stdio.h>
+
+void countdown(unsigned n) {
+    if (n == 0) return;       /* cas de base */
+    printf("%u ", n);
+    countdown(n - 1);          /* problème plus petit */
+}
+```
+
+`countdown(3)` affiche `3 2 1 `. L'exécution ne reste pas dans une seule frame : chaque appel possède sa propre variable `n`. L'appel courant attend la fin de l'appel suivant avant de continuer.
+
+**Contrat de `countdown(n)`** : afficher les entiers de `n` jusqu'à `1`, ou ne rien faire si `n == 0`.
+
+### 6.2 Cas de base et cas limites
+
+Le cas de base doit être **atteignable** depuis tout appel valide. Il peut être unique ou multiple : `n == 0` ou `n == 1` pour une factorielle, `n == 0` pour un tableau vide, `lo >= hi` pour un intervalle vide.
 
 ```c
 unsigned long long factorial(unsigned n) {
-    if (n <= 1) return 1;
-    return n * factorial(n - 1);
+    if (n <= 1) return 1;              /* cas de base */
+    return n * factorial(n - 1);       /* appel plus petit + combinaison */
 }
 ```
-Avec un `unsigned long long` de 64 bits, seules les factorielles de 0 à 20 sont représentables ; rejeter les valeurs supérieures ou utiliser une représentation plus grande. L'arithmétique non signée fonctionne modulo la plage du type. La récursion consomme la pile d'appels. Une profondeur trop grande peut épuiser la pile. Fibonacci naïf illustre la récursion, mais sa version récursive simple est très coûteuse; une version itérative est préférable pour calculer efficacement.
+
+Avec un `unsigned long long` de 64 bits, seules les factorielles de `0` à `20` sont représentables. Au-delà, le résultat est faux par débordement : il faut le rejeter ou utiliser une autre représentation. L'arithmétique non signée fonctionne modulo la plage du type.
+
+### 6.3 Progression et terminaison
+
+Il faut toujours pouvoir nommer une **mesure qui diminue strictement** d'un appel au suivant. C'est cette mesure, et non la seule présence d'un `if`, qui garantit la terminaison.
+
+| Fonction | Appel récursif | Mesure qui diminue |
+|---|---|---|
+| `factorial(n)` | `factorial(n - 1)` | `n` |
+| `countdown(n)` | `countdown(n - 1)` | `n` |
+| `sum_prefix(a, n)` | `sum_prefix(a, n - 1)` | `n` |
+| recherche sur `[lo, hi)` | `[lo, mid)` ou `[mid+1, hi)` | `hi - lo` |
+
+!!! warning "Erreur fréquente — progression absente"
+    ```c
+    unsigned long long fact(unsigned n) {
+        if (n <= 1) return 1;
+        return fact(n);          /* n ne diminue jamais */
+    }
+    ```
+    Le cas de base existe, mais n'est jamais atteint : la pile d'appels se remplit jusqu'à l'épuisement.
+    Correction : `return n * fact(n - 1);`.
+
+### 6.4 Pile d'appels, descente et retour
+
+À chaque appel, le compilateur réserve une **pile d'appels** : une zone contenant les paramètres, les variables locales et l'adresse de retour de cet appel. Traçons `factorial(4)`.
+
+**Phase de descente :**
+
+| Profondeur | Appel | `n` | Opération en attente |
+|---:|---|---:|---|
+| 1 | `factorial(4)` | 4 | `4 * factorial(3)` |
+| 2 | `factorial(3)` | 3 | `3 * factorial(2)` |
+| 3 | `factorial(2)` | 2 | `2 * factorial(1)` |
+| 4 | `factorial(1)` | 1 | aucun appel, retour `1` |
+
+**Phase de retour :**
+
+```text
+factorial(2) = 2 * 1 = 2
+factorial(3) = 3 * 2 = 6
+factorial(4) = 4 * 6 = 24
+```
+
+Le dernier appel est le premier à rendre sa valeur : c'est une structure LIFO (*last in, first out*). L'opération en attente est exécutée pendant le retour, pas pendant la descente.
+
+Une profondeur trop grande épuise la pile. En C, ne supposez pas que le compilateur transformera automatiquement une récursion terminale en boucle.
+
+### 6.5 Valeurs de retour et combinaison
+
+La valeur calculée par un appel peut être combinée de trois façons :
+
+- **une multiplication avec un appel** : `n * factorial(n - 1)` ;
+- **deux appels indépendants** : une récurrence de type Fibonacci, où les mêmes sous-problèmes sont recalculés ;
+- **diviser, résoudre, fusionner** : le tri fusion, vu plus loin.
+
+Le résultat peut être juste même quand le coût devient exponentiel. C'est pourquoi la [fiche 1](../exercices/fiches/01_Variables_Si_Boucles.md) demande aussi une version itérative des suites récurrentes : la récursivité sert d'abord à raisonner, pas à garantir l'efficacité.
+
+### 6.6 Récursivité à plusieurs paramètres
+
+Plusieurs paramètres ne changent pas la méthode : on identifie celui ou ceux qui portent la progression, et on vérifie les invariants. L'invariant décrit ce qui reste vrai à chaque appel ; la mesure qui diminue décrit pourquoi les appels s'arrêtent.
+
+Une fonction peut recevoir un tableau, une taille et deux bornes : c'est le modèle utilisé au paragraphe suivant. L'important est de ne jamais confondre la donnée transmise et la mesure qui rend les appels plus petits.
+
+### 6.7 Récursivité sur les tableaux et les intervalles
+
+Les tableaux sont déjà connus au chapitre 4. Une somme de préfixe évite toute arithmétique de pointeur et montre comment transmettre la taille :
+
+```c
+#include <stddef.h>
+
+unsigned long long sum_prefix(const int a[], size_t n) {
+    if (n == 0) return 0;              /* tableau vide */
+    return (unsigned long long)a[n - 1] + sum_prefix(a, n - 1);
+}
+```
+
+`sum_prefix(a, 3)` traite `a[2]`, puis `a[1]`, puis `a[0]`. La mesure qui diminue est `n`.
+
+Une recherche sur intervalle semi-ouvert `[lo, hi)` utilise deux bornes au lieu de recopier le tableau. L'invariant est : « la zone encore à examiner est exactement `[lo, hi)` ». À chaque appel, cette zone diminue, jusqu'à devenir vide. C'est le modèle utilisé par le tri fusion de la [fiche 6](../exercices/fiches/06_Tri-Recherche-Listes.md).
+
+### 6.8 Récursivité ou itération
+
+Les deux versions ci-dessous affichent la même suite, mais pas de la même manière :
+
+=== "Itératif"
+
+    ```c
+    void countdown_loop(unsigned n) {
+        while (n > 0) {
+            printf("%u ", n);
+            --n;
+        }
+    }
+    ```
+
+=== "Récursif"
+
+    ```c
+    void countdown(unsigned n) {
+        if (n == 0) return;
+        printf("%u ", n);
+        countdown(n - 1);
+    }
+    ```
+
+Choisir la récursivité quand la structure du problème est naturellement récursive (arbre, intervalle qui se divise, liste). Choisir la boucle quand la profondeur peut être grande ou que le même sous-problème serait recalculé plusieurs fois. Comparer aussi la lisibilité : une récursion claire vaut mieux qu'une boucle avec un état difficile à suivre, mais pas l'inverse.
+
+Voir aussi [Aller plus loin, §2](../aller-plus-loin/index.md#2-recursion-arbre-dappels-cout-et-alternatives) pour le coût et les arbres d'appels.
+
+### 6.9 Erreurs fréquentes et méthode de débogage
+
+| Erreur | Pourquoi ça échoue | Correction |
+|---|---|---|
+| `fact(n)` sans cas de base | aucun appel ne s'arrête | ajouter `if (n <= 1) return 1;` |
+| `return fact(n);` | la mesure ne diminue pas | appeler sur `n - 1`, `n/2` ou un intervalle plus court |
+| `if (n != 1) return n * fact(n - 1);` | avec `n == 0`, `n - 1` devient `UINT_MAX` | tester `n <= 1` **avant** de soustraire |
+| appel récursif sans `return` | la valeur calculée est perdue | `return` explicite sur chaque chemin |
+| récurrence à deux appels naive | sous-problèmes recalculés | tracer les appels puis chercher une forme itérative |
+
+Méthode pratique en cinq étapes :
+
+1. Écrire le contrat de la fonction en une phrase.
+2. Nommer le cas de base et vérifier qu'il est atteignable.
+3. Nommer la mesure qui diminue strictement.
+4. Tracer à la main `n = 0`, `n = 1` et `n = 2` en notant l'opération en attente.
+5. Compiler avec `-Wall -Wextra -Wpedantic` : un chemin sans `return` est un avertissement à corriger, pas une opinion.
+
+!!! warning "Erreur fréquente — `return` oublié"
+    ```c
+    unsigned long long fact(unsigned n) {
+        if (n <= 1) return 1;
+        fact(n - 1);                /* résultat calculé puis ignoré */
+        return 1;                   /* tous les n > 1 donnent 1 */
+    }
+    ```
+    Correction : `return n * fact(n - 1);`.
+
+> **Voir aussi** : [Exercices — fiche 2, exercices 5-8 et préparation](../exercices/fiches/02_Fonctions.md) · [Exercices — fiche 6, tri fusion](../exercices/fiches/06_Tri-Recherche-Listes.md) · [Aller plus loin, §2](../aller-plus-loin/index.md#2-recursion-arbre-dappels-cout-et-alternatives).
 
 ## 7. Pointeurs et adresses
 
@@ -203,6 +412,20 @@ for (size_t i = 0; i < n; ++i, ++p) { /* lire *p */ }
 
 [Fiche d'exercices — Pointeurs](../exercices/fiches/03_Pointeurs.md)
 
+Représentation simplifiée :
+
+```text
+x : [ 50 ]      p : [ adresse de x ]
+        ^                     |
+        +---- *p -------------+
+```
+
+`&x` donne l'adresse de la case `x` ; `*p` désigne cette même case. Les deux opérations sont inverses.
+
+!!! warning "Erreur fréquente — pointeur non initialisé"
+    `int *p; *p = 3;` écrit à une adresse quelconque : comportement indéfini.
+    Correction : initialiser `p` avec `&x`, `malloc`, ou `NULL`, puis vérifier avant déréférencement.
+
 ## 8. Chaînes de caractères
 
 Une chaîne C est un tableau de `char` terminé par `\0`. Sa capacité doit inclure ce caractère terminal.
@@ -218,6 +441,23 @@ char line[128];
 if (fgets(line, sizeof line, stdin) != NULL) { /* traiter */ }
 ```
 Attention : `fgets` peut conserver le `\n`; la ligne peut être tronquée si le tampon est trop petit. Les chaînes manipulées en place peuvent utiliser deux pointeurs : lecture et écriture, avec l'écriture toujours à une position ≤ lecture.
+
+Retirer le `\n` conservé demande de vérifier ce qui a réellement été lu :
+
+```c
+#include <string.h>
+
+char line[128];
+if (fgets(line, sizeof line, stdin) != NULL) {
+    size_t len = strlen(line);
+    if (len > 0 && line[len - 1] == '\n') line[len - 1] = '\0';
+    else if (len == sizeof line - 1 && line[len - 1] != '\n') {
+        /* ligne trop longue : le reste reste dans le flux. */
+    }
+}
+```
+
+> **Voir aussi** : [Exercices — fiche 2](../exercices/fiches/02_Fonctions.md).
 
 ## 9. Allocation dynamique
 
@@ -254,6 +494,21 @@ if (new_n == 0) {
 Inclure `<stdlib.h>` et `<stdint.h>`. Mettre à jour la taille/capacité logique uniquement après réussite. Un `realloc` de taille nulle a un comportement indéfini en C23.
 
 Un tableau dynamique à deux dimensions peut être représenté par un tableau de pointeurs (allocations séparées) ou par un bloc contigu. Le bloc contigu simplifie la libération et la localité mémoire.
+
+États possibles de `a` après une tentative de redimensionnement :
+
+| Issue | État de `a` |
+|---|---|
+| Succès | nouveau bloc, ancien bloc libéré |
+| Échec (`tmp == NULL`) | ancien bloc inchangé et toujours valide |
+| `new_n == 0` | `a` vaut `NULL` après libération |
+
+Règle de propriété : la fonction qui reçoit un bloc alloué doit préciser si elle le libère ou le rend à l'appelant. Sans indication contraire, l'appelant libère le bloc reçu.
+
+!!! warning "Erreur fréquente — `realloc`"
+    `p = realloc(p, n)` perd l'ancien bloc si l'allocation échoue. Utilisez un pointeur temporaire, traitez `n == 0` et vérifiez le débordement de `n * sizeof *p`.
+
+> **Voir aussi** : [Exercices — fiche 3](../exercices/fiches/03_Pointeurs.md).
 
 ## 10. Structures et `typedef`
 
@@ -293,6 +548,11 @@ Le comparateur retourne un nombre négatif, zéro ou positif. Ne pas retourner `
 
 [Fiche d'exercices — Callbacks et qsort](../exercices/fiches/03_Pointeurs.md)
 
+Les quatre arguments de `qsort` sont : l'adresse du premier élément, le nombre d'éléments, la taille d'un élément, puis le comparateur. Le comparateur doit être cohérent : si `cmp(a,b) < 0`, alors `cmp(b,a) > 0`.
+
+!!! warning "Erreur fréquente — comparateur `qsort`"
+    Après cast et déréférencement, ne retournez pas `x - y` : le résultat peut déborder. Utilisez `(x > y) - (x < y)`.
+
 ## 12. Listes chaînées
 
 Une liste simplement chaînée est constituée de nœuds contenant une donnée et un pointeur vers le nœud suivant. La tête peut être `NULL`.
@@ -315,6 +575,10 @@ typedef struct Node {
 Les fonctions qui modifient la tête doivent recevoir `Node **head` ou retourner la nouvelle tête. Ne jamais utiliser un nœud après `free`.
 
 [Fiche d'exercices — Listes chaînées](../exercices/fiches/06_Tri-Recherche-Listes.md)
+
+Avec `Node **head`, on modifie la tête chez l'appelant. Une suppression doit sauvegarder l'adresse du maillon suivant avant de libérer le maillon courant.
+
+Invariant utile : `cur` désigne toujours l'adresse du champ à examiner (`head` ou `&(*cur)->next`) ; `*cur` est le maillon courant ou `NULL`. Cet invariant suffit à raisonner sur l'insertion et la suppression sans mémoire perdue.
 
 ## 13. Recherche et tri
 
@@ -340,6 +604,20 @@ Les fonctions qui modifient la tête doivent recevoir `Node **head` ou retourner
 
 [Fiche d'exercices — Tri et recherche](../exercices/fiches/06_Tri-Recherche-Listes.md)
 
+Trace de recherche dichotomique sur `[1, 3, 5, 7, 9, 11]`, avec `x = 9` :
+
+| Étape | `lo` | `hi` | `mid` | `a[mid]` | Décision |
+|---:|---:|---:|---:|---:|---|
+| 1 | 0 | 6 | 3 | 7 | `lo = 4` |
+| 2 | 4 | 6 | 5 | 11 | `hi = 5` |
+| 3 | 4 | 5 | 4 | 9 | trouvé |
+
+Le milieu est calculé avec `lo + (hi - lo) / 2` pour éviter le débordement de `lo + hi`.
+
+Trace de fusion de `[4, 1, 3, 2]` : `[4,1]` et `[3,2]` deviennent `[1,4]` et `[2,3]`, puis la fusion donne `[1,2,3,4]`. La profondeur de division est logarithmique, chaque fusion traite linéairement les éléments.
+
+Les exercices 8-20 de la [fiche 6](../exercices/fiches/06_Tri-Recherche-Listes.md) supposent les méthodes ci-dessous ; lire d'abord [Aller plus loin, §§3-7](../aller-plus-loin/index.md#3-choisir-un-tri).
+
 ## 14. Fichiers
 
 Les flux standard : `stdin`, `stdout`, `stderr`. Un fichier se manipule avec `FILE *` et `fopen`.
@@ -360,6 +638,22 @@ Modes : `r` lecture, `w` écriture/écrasement, `a` ajout; suffixe `b` pour bina
 - Gestion d'erreurs : vérifier `ferror`, `feof` dans la bonne logique, et les retours des fonctions.
 
 [Fiche d'exercices — Fichiers](../exercices/fiches/05_Fichiers.md)
+
+```c
+FILE *f = fopen("data.txt", "r");
+if (f == NULL) { perror("data.txt"); return 1; }
+char line[256];
+while (fgets(line, sizeof line, f) != NULL) {
+    fputs(line, stdout);
+}
+if (ferror(f)) { perror("lecture"); }
+if (fclose(f) != 0) { /* gérer l'erreur */ }
+```
+
+La boucle teste le résultat de la lecture, pas `feof` avant la lecture. `feof(f)` ne devient vrai qu'après une lecture qui a échoué ; `ferror(f)` distingue une vraie erreur de la fin normale du fichier.
+
+!!! warning "Erreur fréquente — `feof`"
+    `while (!feof(f))` traite une lecture échouée. Utilisez `while (fgets(line, sizeof line, f) != NULL)` et vérifiez le résultat de `fopen`.
 
 ## 15. Checklist : domaines couverts
 
