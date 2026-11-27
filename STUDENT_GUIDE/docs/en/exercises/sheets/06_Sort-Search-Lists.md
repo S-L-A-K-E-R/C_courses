@@ -1,6 +1,8 @@
 # Sorting, Searching & Lists (Algo + C)
 
-> Exercise statements only. Refer to the original PDF for the accompanying material.
+> **Course prerequisites**: [6. Recursion, §6.7 Arrays and intervals](../../course/index.md#67-recursion-on-arrays-and-intervals) · [11. Callbacks and qsort](../../course/index.md#11-library-functions-callbacks-and-qsort) · [12. Linked lists](../../course/index.md#12-linked-lists) · [13. Searching and sorting](../../course/index.md#13-searching-and-sorting).
+> Exercises 8-20: read [Beyond the core §§3-7](../../beyond-core/index.md#3-choosing-a-sort) first (sorts, partition, heaps, selection, lists).
+> Statements only; no solutions are provided. [Source PDF](06_Sort-Search-Lists.pdf) keeps the same statements as a reference.
 
 ## Exercise 1 — Sequential search (index or -1)
 
@@ -30,9 +32,13 @@ Task. Bubble sort with early stopping if no swap occurs during a pass.
 
 Task. Merge sorted arrays A and B into a sorted array C.
 
+Hint: merging is the "combine" step of merge sort, traced in [§13 Searching and sorting](../../course/index.md#13-searching-and-sorting).
+
 ## Exercise 8 — Merge sort
 
 Task. Implement recursive merge sort (stable).
+
+Hint: before writing the recursive split, reread [§6.7 Recursion on arrays and intervals](../../course/index.md#67-recursion-on-arrays-and-intervals); the decreasing measure is the interval length.
 
 ## Exercise 9 — Quicksort (Lomuto partition)
 
@@ -60,7 +66,7 @@ Task. Compact the array so that each value appears once. Return the new size.
 
 ## Exercise 15 — Target sum (two-pointer)
 
-Task. Determine whether there exist i < j such that ai + aj = S.
+Task. Given an array sorted in increasing order, determine whether there exist i < j such that a[i] + a[j] = S.
 
 ## Exercise 16 — Linked list : insert at head & tail
 
