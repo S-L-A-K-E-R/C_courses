@@ -28,6 +28,7 @@ The intended audience is beginners and intermediate learners, as well as teacher
 - **Two learning levels**: a core course and a complementary "beyond the core" section.
 - **Exercise sheets**: six sheets per language, available as Markdown exercise statements and as the original PDFs.
 - **Contextual practice links**: relevant course sections link directly to the matching exercise sheet.
+- **Diagnostic support**: expanded recursion explanations, common mistakes, and preparation notes for the recursive exercises.
 - **Readable on any screen**: dark/light theme switch, sectioned navigation, search, and copyable code blocks.
 - **Static output**: the generated site can be hosted on any static file host.
 
@@ -95,6 +96,7 @@ The static site is written to `site/`, which is ignored by Git. The output direc
 - After starting the server, use the sidebar to choose **Français** or **English**, then open the core course, exercises, or advanced section.
 - The [French exercise index](docs/fr/exercices/index.md) and [English exercise index](docs/en/exercises/index.md) list all six sheets. Each entry links to the Markdown version first, with the original PDF as a secondary link.
 - Course chapters include small contextual links to the sheet that matches the topic just covered.
+- The recursion chapter and the preparation note in sheet 2 use the same vocabulary: contract, base case, decreasing measure, pending operation, and debugging routine.
 
 You can also read the Markdown files directly on GitHub without building the site, although the rendered theme and navigation are only available through MkDocs.
 
